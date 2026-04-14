@@ -26,8 +26,8 @@ def plot_results(wallets, numbered, lettered):
     bars = plt.bar(players, balances, color=colors)
     
     plt.axhline(0, color='black', linewidth=0.8)
-    plt.ylabel('Wallet ($)')
-    plt.title('Final Standings: RPS Entropy Simulation')
+    plt.ylabel('Yahu Funds ($)')
+    plt.title('RPS Entropy Simulation')
     plt.ylim(0, max(balances) + 2)
     
     # Add labels on top of bars
