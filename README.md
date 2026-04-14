@@ -16,6 +16,9 @@ HLChem-Data-Pooling/
 └── yahusimulation/  # Entropy analogy (big yahu calling)
 ```
 
+## Yahu Simulation
+Go to this website to check out the simulation I made! (with the help of Gemini and Claude)
+
 
 ---
 
