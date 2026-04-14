@@ -259,7 +259,8 @@ for run, g in df.groupby(run_col):
         "peaks_wavelengths": ";".join(map(str, peaks_wl)),
         "peaks_values": ";".join(map(str, peaks_val)),
     })
-
+X = df[['sepal_length', 'sepal_width']].values
+species = df['species'].valu
 # Save summary CSV
 summary_df = pd.DataFrame(summary_rows)
 summary_path = OUT_DIR / "iron_summary.csv"
