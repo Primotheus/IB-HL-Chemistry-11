@@ -10,14 +10,14 @@ HLChem-Data-Pooling/
 ├── Data Pooling/     # Data Pooling assignment raw data & analysis
 ├── Iron Contents/    # Iron concentration analysis data
 ├── iron_plots/       # Iron concentration lab graphs
-└── plots/           # Data Pooling assignment graphs
+├── plots/           # Data Pooling assignment graphs
+├── imf_temp/        # IMF Presentation
+├── lauric_acid/     # Lauric acid
+└── yahusimulation/  # Entropy analogy yahu experiment
 ```
 
-## 🧪 Current Labs
-
-- **Iron Concentration Analysis** - Spectrophotometry and data analysis
 
 ---
 
 **Course:** IB HL Chemistry 11  
-**Year:** 2024-2025
+**Year:** 2025-2026
