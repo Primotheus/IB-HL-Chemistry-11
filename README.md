@@ -13,7 +13,7 @@ HLChem-Data-Pooling/
 ├── plots/           # Data Pooling assignment graphs
 ├── imf_temp/        # IMF Presentation
 ├── lauric_acid/     # Lauric acid
-└── yahusimulation/  # Entropy analogy yahu experiment
+└── yahusimulation/  # Entropy analogy (big yahu calling)
 ```
 
 
