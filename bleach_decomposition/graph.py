@@ -6,8 +6,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 BASE = Path(__file__).resolve().parent
-FILES = [BASE / f for f in ("13C.csv", "23C.csv", "33C.csv")]
-GROUPS_CSV = BASE / "groups.csv"
+# use csv/ subfolder for source files and cleaned outputs
+CSV_DIR = BASE / "csv"
+CSV_DIR.mkdir(exist_ok=True)
+FILES = [CSV_DIR / f for f in ("13C.csv", "23C.csv", "33C.csv")]
+GROUPS_CSV = CSV_DIR / "groups.csv" if (CSV_DIR / "groups.csv").exists() else BASE / "groups.csv"
 OUT = BASE / "plots"
 OUT.mkdir(exist_ok=True)
 
@@ -194,8 +197,8 @@ def parse_and_plot(path):
         return
 
     delta_df = pd.DataFrame(delta_rows)
-    # save cleaned delta CSV
-    out_csv = OUT / f"{path.stem}_deltas.csv"
+    # save cleaned delta CSV into the csv/ folder
+    out_csv = CSV_DIR / f"{path.stem}_cleaned.csv"
     delta_df.to_csv(out_csv, index=False)
     print(f"Saved deltas -> {out_csv}")
 
@@ -233,7 +236,7 @@ def parse_and_plot(path):
     plt.axhline(0, color='gray', linewidth=0.7)
     plt.xlabel('Time (s)')
     plt.ylabel('Volume change from initial (mL)')
-    plt.title(f'Volume change from initial — {path.name}')
+    plt.title(f'Decomposition of Bleach in the presence of a catalyst — {path.name}')
     plt.legend(ncol=2, fontsize='small')
     plt.grid(alpha=0.3)
     out_png = OUT / f"{path.stem}.png"
