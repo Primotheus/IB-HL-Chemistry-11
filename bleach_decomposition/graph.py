@@ -202,6 +202,46 @@ def parse_and_plot(path):
     delta_df.to_csv(out_csv, index=False)
     print(f"Saved deltas -> {out_csv}")
 
+    # --- compute average rates per group/trial ---
+    grouping_key = ['Group_label', 'Trial'] if 'Trial' in delta_df.columns else ['Group_label']
+    rates = []
+    for keys, sub in delta_df.groupby(grouping_key):
+        # normalize keys
+        if isinstance(keys, tuple):
+            g_label, trial = keys
+        else:
+            g_label = keys
+            trial = None
+        sub_sorted = sub.sort_values('Time')
+        times = sub_sorted['Time'].to_numpy()
+        vols = sub_sorted['Volume'].to_numpy()
+        n_pts = len(times)
+        if n_pts < 2:
+            rates.append({'Group_label': g_label, 'Trial': trial, 'n_points': n_pts,
+                          'total_delta_mL': np.nan, 'elapsed_s': np.nan,
+                          'total_rate_mL_per_s': np.nan, 'mean_inst_rate_mL_per_s': np.nan})
+            continue
+        dt = np.diff(times)
+        dv = np.diff(vols)
+        # avoid division by zero
+        with np.errstate(divide='ignore', invalid='ignore'):
+            inst_rates = dv / dt
+        mean_inst = np.nanmean(inst_rates) if inst_rates.size > 0 else np.nan
+        elapsed = times[-1] - times[0]
+        total_delta = vols[-1] - vols[0]
+        total_rate = total_delta / elapsed if elapsed != 0 else np.nan
+        rates.append({'Group_label': g_label, 'Trial': trial, 'n_points': n_pts,
+                      'total_delta_mL': float(total_delta), 'elapsed_s': float(elapsed),
+                      'total_rate_mL_per_s': float(total_rate) if not np.isnan(total_rate) else np.nan,
+                      'mean_inst_rate_mL_per_s': float(mean_inst) if not np.isnan(mean_inst) else np.nan})
+
+    rates_df = pd.DataFrame(rates)
+    out_rates = CSV_DIR / f"{path.stem}_rates.csv"
+    rates_df.to_csv(out_rates, index=False)
+    print(f"Saved rates summary -> {out_rates}")
+    # print short console summary
+    print(rates_df[['Group_label','Trial','n_points','total_rate_mL_per_s','mean_inst_rate_mL_per_s']].to_string(index=False))
+
     # plotting: group-first, then trials within each group (distinct color per group, linestyle/marker per trial)
     plt.figure(figsize=(10,6))
     groups = list(delta_df['Group_label'].unique())
